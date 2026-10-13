@@ -373,7 +373,7 @@ export default function Home() {
                 <p className="eyebrow"><span className="eyebrow-mark" aria-hidden="true">///</span> Marketing &amp; social media</p>
                 <h2 id="mkt-title">Marketing, który zdobywa klientów<br /><span className="h-accent">i&nbsp;pozwala skalować biznes.</span></h2>
               </div>
-              <p>Tworzymy kampanie, które przyciągają nowych klientów do Twojej firmy. Łączymy Google Ads, Facebook Ads, GPT Ads i&nbsp;content marketing. Dobieramy kanały, tworzymy treści i&nbsp;optymalizujemy kampanie z&nbsp;myślą o&nbsp;sprzedaży.</p>
+              <p>Tworzymy kampanie, które przyciągają nowych klientów do Twojej firmy. Łączymy Google Ads, Facebook Ads, GPT Ads i&nbsp;SEO. Dobieramy kanały, tworzymy treści i&nbsp;optymalizujemy kampanie z&nbsp;myślą o&nbsp;sprzedaży.</p>
               <table className="record" aria-describedby="record-note">
                 <caption>Rekordowy wynik jednej z&nbsp;obsługiwanych firm</caption>
                 <tbody>
@@ -394,7 +394,7 @@ export default function Home() {
               <p id="record-note" className="record-note">Wynik rekordowy, nie stanowi gwarancji wyników kolejnych kampanii.</p>
               <a className="link" href="#kontakt">Porozmawiajmy o&nbsp;Twoim marketingu</a>
             </div>
-            <div className="inflow" role="img" aria-label="Google Ads, Facebook Ads, GPT Ads, content, inne kanały i axoy, który doładowuje cały proces, prowadzą ruch do Twojej firmy. Z tego ruchu jeden po drugim powstają nowi klienci.">
+            <div className="inflow" role="img" aria-label="Google Ads, Facebook Ads, GPT Ads, SEO, inne kanały i axoy, który doładowuje cały proces, prowadzą ruch do Twojej firmy. Z tego ruchu jeden po drugim powstają nowi klienci.">
               <p className="inflow-title" aria-hidden="true">Wiele kanałów. Jeden cel.</p>
               <ul className="inflow-channels" aria-hidden="true">
                 <li><span className="ch-mark"><svg viewBox="0 0 28 28" aria-hidden="true" focusable="false"><g fill="none" strokeWidth="8.5" strokeLinecap="round"><path d="m14 5-9 17" stroke="#fbbc04" /><path d="m14 5 9 17" stroke="#4285f4" /><circle cx="5" cy="22" r="4.25" fill="#34a853" stroke="none" /></g></svg></span>Google Ads</li>
