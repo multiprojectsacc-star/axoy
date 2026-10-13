@@ -3430,3 +3430,46 @@ p.eyebrow,
   stroke: #a99dc2;
   stroke-width: 1.6;
 }
+
+/* ---------- Pięć etapów: punkty zapalają się przy przewijaniu ----------
+ * Każdy punkt ma swój kolor (zator, ocena, projekt, wdrożenie, przepływ) i lekkie wypełnienie.
+ * Ze skryptem (.is-scrolly) linia postępu schodzi razem z przewijaniem, a punkt dostaje kolor,
+ * gdy linia do niego dojdzie. Kolor zostaje; po przewinięciu nad sekcję skrypt zeruje postęp.
+ * Bez skryptu wszystkie punkty są kolorowe od razu. */
+.step--jam::before {
+  background: #fdecef;
+}
+.step--plan::before {
+  background: #ece8f3;
+}
+.step--draft::before {
+  background: #f2edfe;
+}
+.steps.is-scrolly .step::before {
+  transition: border-color 0.4s, background-color 0.4s, color 0.4s, box-shadow 0.5s;
+}
+.steps.is-scrolly .step:not(.is-lit)::before {
+  border-color: var(--line-strong);
+  border-style: solid;
+  background: var(--bg);
+  color: var(--text-3);
+  box-shadow: none;
+}
+.steps.is-scrolly .step.is-lit::before {
+  animation: step-lit 0.6s cubic-bezier(0.3, 1.5, 0.5, 1);
+}
+@keyframes step-lit {
+  0% {
+    transform: scale(0.8);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+/* jasna linia pod spodem, kolorowa linia odsłania się wraz z postępem (--fill od 0 do 1) */
+.steps.is-scrolly .step:not(:last-child) {
+  background: linear-gradient(var(--line), var(--line)) no-repeat 19.25px 44px / 1.5px calc(100% - 48px);
+}
+.steps.is-scrolly .step::after {
+  clip-path: inset(0 0 calc((1 - var(--fill, 0)) * 100%) 0);
+}

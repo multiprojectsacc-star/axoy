@@ -660,6 +660,87 @@
     if (inView) start();
   }
 
+  /* ---------- Pięć etapów: punkty zapalają się przy przewijaniu ----------
+   * Linia postępu schodzi w dół razem z przewijaniem (do 62% wysokości ekranu). Gdy dojdzie
+   * do punktu, punkt dostaje swój kolor. Postęp tylko rośnie, więc kolory zostają; gdy cała
+   * sekcja znów jest pod ekranem (użytkownik wrócił nad nią), postęp wraca do zera.
+   * Przy szybkim skoku linia dogania cel z ograniczoną prędkością, więc punkty i tak
+   * zapalają się po kolei. */
+  var stepsList = document.querySelector(".steps");
+  if (stepsList) {
+    var stepItems = Array.prototype.slice.call(stepsList.querySelectorAll(".step"));
+    var stepsSection = stepsList.closest("section") || stepsList;
+    var stepsCalm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var stepsTarget = 0; // dokąd ma dojść linia (px od góry listy)
+    var stepsShown = 0; // dokąd już doszła
+    var stepsRaf = 0;
+    var stepsLast = 0;
+    var stepsTick = 0;
+    stepsList.classList.add("is-scrolly");
+
+    var paintSteps = function () {
+      var listTop = stepsList.getBoundingClientRect().top;
+      stepItems.forEach(function (item) {
+        var box = item.getBoundingClientRect();
+        var top = box.top - listTop;
+        item.classList.toggle("is-lit", stepsShown >= top + 20);
+        var start = top + 44;
+        var end = top + box.height - 4;
+        var fill = Math.max(0, Math.min(1, (stepsShown - start) / Math.max(1, end - start)));
+        item.style.setProperty("--fill", fill.toFixed(3));
+      });
+    };
+
+    var stepsFrame = function (now) {
+      var dt = stepsLast ? Math.min(64, now - stepsLast) : 16;
+      stepsLast = now;
+      stepsShown = Math.min(stepsTarget, stepsShown + (900 * dt) / 1000);
+      paintSteps();
+      if (stepsShown < stepsTarget) {
+        stepsRaf = requestAnimationFrame(stepsFrame);
+      } else {
+        stepsRaf = 0;
+        stepsLast = 0;
+      }
+    };
+
+    var checkSteps = function () {
+      var vh = window.innerHeight;
+      if (stepsSection.getBoundingClientRect().top >= vh) {
+        if (stepsTarget || stepsShown) {
+          stepsTarget = 0;
+          stepsShown = 0;
+          if (stepsRaf) cancelAnimationFrame(stepsRaf);
+          stepsRaf = 0;
+          stepsLast = 0;
+          paintSteps();
+        }
+        return;
+      }
+      var reach = vh * 0.62 - stepsList.getBoundingClientRect().top;
+      if (reach <= stepsTarget) return;
+      stepsTarget = reach;
+      if (stepsCalm) {
+        stepsShown = stepsTarget;
+        paintSteps();
+      } else if (!stepsRaf) {
+        stepsRaf = requestAnimationFrame(stepsFrame);
+      }
+    };
+
+    var onStepsScroll = function () {
+      if (stepsTick) return;
+      stepsTick = requestAnimationFrame(function () {
+        stepsTick = 0;
+        checkSteps();
+      });
+    };
+    window.addEventListener("scroll", onStepsScroll, { passive: true });
+    window.addEventListener("resize", onStepsScroll);
+    paintSteps();
+    checkSteps();
+  }
+
   /* ---------- Zakres usług: ruch na schematach ----------
    * Tory z atrybutem data-flow niosą kropki:
    *   slow – szara kropka powoli przedziera się przez dzisiejszy proces i stoi w zatorze,
